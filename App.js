@@ -1,20 +1,68 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import {
+  Text,
+  SafeAreaView,
+  View,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import { appStyle as styles } from "./styles";
 
-export default function App() {
+function App() {
+  const [text, setText] = useState("");
+
+  const [task, setTask] = useState([
+    "Learn Redux",
+    "Learn React Native"
+  ]);
+
+  const handleChange = () => {
+    setTask([...task, text]);
+    setText("");
+  };
+
+  const handleDelete = (index) => {
+    const newTask = [...task];
+    newTask.splice(index, 1);
+    setTask(newTask);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>My Tasks {text}</Text>
+        <Text style={styles.subTitle}>
+          Enter your tasks into the text box and add button
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your task here"
+          value={text}
+          onChangeText={setText}
+        />
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleChange}>
+          <Text>Add Task</Text>
+        </TouchableOpacity>
+        <View style={styles.divider} />
+        <FlatList
+          data={task}
+          renderItem={({ item }) => (
+            <View style={styles.taskContainer}>
+              <Text style={styles.taskText}>{item}</Text>
+              <TouchableOpacity
+                style={styles.taskDelete}
+                onPress={handleDelete}
+              >
+                <Text style={styles.taskDeleteTask}>X</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          keyExtractor={(item) => item + Math.random()}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
