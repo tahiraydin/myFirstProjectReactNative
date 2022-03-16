@@ -13,8 +13,7 @@ function App() {
   const [text, setText] = useState("");
 
   const [task, setTask] = useState([
-    "Learn Redux",
-    "Learn React Native"
+    
   ]);
 
   const handleChange = () => {
